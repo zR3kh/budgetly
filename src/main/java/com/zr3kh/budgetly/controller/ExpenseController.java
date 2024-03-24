@@ -1,5 +1,7 @@
 package com.zr3kh.budgetly.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zr3kh.budgetly.model.Expense;
 import com.zr3kh.budgetly.service.ExpenseService;
 import org.bson.types.ObjectId;
@@ -26,7 +28,13 @@ public class ExpenseController {
         return new ResponseEntity<>(expenseService.getSingleExpenseDB(objectID), HttpStatus.OK);
     }
     @PostMapping("/api/v1")
-    public ResponseEntity<Expense> createSingleExpense(@RequestBody String body) {
-        return new ResponseEntity<>(expenseService.createExpenseDB(body), HttpStatus.CREATED);
+    public ResponseEntity<?> createSingleExpense(@RequestBody String body) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return new ResponseEntity<>(expenseService.createExpenseDB(objectMapper.readValue(body, Expense.class)), HttpStatus.CREATED);
+        } catch(JsonProcessingException jpe) {
+            jpe.printStackTrace();
+            return new ResponseEntity<>("Data format is incorrect.", HttpStatus.BAD_REQUEST);
+        }
     }
 }

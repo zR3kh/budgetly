@@ -23,6 +23,10 @@ public class Expense {
         this.cost = cost;
     }
 
+    public Expense() {
+
+    }
+
     public String getName() {
         return name;
     }
