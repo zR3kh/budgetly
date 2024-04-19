@@ -1,0 +1,6 @@
+.header--style {
+  background-color: #D0D0D0;
+}
+input, input::placeholder {
+  font-size: 1.25rem;
+}
